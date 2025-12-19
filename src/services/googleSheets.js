@@ -13,11 +13,14 @@ export async function saveToGoogleSheets(formData) {
     }
 
     // Send complete form data
+    // Note: Using 'text/plain' instead of 'application/json' because mobile browsers
+    // often strip or block headers for 'no-cors' requests. Google Apps Script 
+    // will still receive the body.
     const response = await fetch(GOOGLE_SHEETS_URL, {
       method: 'POST',
       mode: 'no-cors', // Google Apps Script requires this
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=utf-8',
       },
       body: JSON.stringify(formData)
     });
