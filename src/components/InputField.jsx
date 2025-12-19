@@ -4,6 +4,7 @@ export default function InputField({
     type = "text",
     placeholder,
     required = false,
+    description,
     error,
     register,
     ...rest
@@ -13,6 +14,7 @@ export default function InputField({
             <label className="form-label" htmlFor={name}>
                 {label}
                 {required && <span className="required">*</span>}
+                {description && <div className="field-description">{description}</div>}
             </label>
             <input
                 id={name}

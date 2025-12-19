@@ -119,7 +119,7 @@ export async function generatePDF(formData) {
         ['Property Address', formData.propertyFullAddress || 'Alathara Road, Sreekaryam P O, Thiruvananthapuram'],
         ['PIN Code', formData.propertyPIN || '695017'],
         ['Date of Agreement', safeFormatDate(formData.agreementDate)],
-        ['Total Consideration (Excl GST)', formData.totalConsideration ? `Rs. ${parseFloat(formData.totalConsideration).toLocaleString('en-IN')}` : 'N/A'],
+        ['Total Value of Consideration/Property Value (₹)', formData.totalConsideration ? `Rs. ${parseFloat(formData.totalConsideration).toLocaleString('en-IN')}` : 'N/A'],
         ['Payment Type', (formData.paymentType || 'N/A').toUpperCase()],
         ['Stamp Duty Higher', (formData.stampDutyHigher || 'no').toUpperCase()],
     ];

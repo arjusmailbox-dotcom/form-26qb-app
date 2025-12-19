@@ -580,7 +580,8 @@ export default function Form26QB() {
 
                     <div className="form-grid">
                         <InputField
-                            label="Total Value of Consideration (₹) (Excl GST)"
+                            label="Total Value of Consideration/Property Value (₹)"
+                            description="(Excl GST and Deposits; BV+AV)"
                             name="totalConsideration"
                             type="number"
                             placeholder="Minimum ₹50,00,000"

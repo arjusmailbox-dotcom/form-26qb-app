@@ -25,6 +25,18 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
+REM Configure Git Identity if missing
+git config --global user.email >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Configuring Git email...
+    git config --global user.email "arjusmailbox@gmail.com"
+)
+git config --global user.name >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Configuring Git name...
+    git config --global user.name "Arjus"
+)
+
 REM Initialize Git if needed
 if not exist .git (
     echo Initializing Git repository...
