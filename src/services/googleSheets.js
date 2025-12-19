@@ -13,25 +13,41 @@ export async function saveToGoogleSheets(formData) {
     }
 
     // Send complete form data
-    // Note: Using 'text/plain' instead of 'application/json' because mobile browsers
-    // often strip or block headers for 'no-cors' requests. Google Apps Script 
-    // will still receive the body.
-    const response = await fetch(GOOGLE_SHEETS_URL, {
+    // Note: We use the simplest possible request to avoid preflight/CORS issues on mobile.
+    // 'application/x-www-form-urlencoded' or 'text/plain' are "simple" content types.
+    const body = JSON.stringify(formData);
+
+    // Try navigator.sendBeacon as a robust fallback for mobile browsers
+    if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+      console.log('📡 Using navigator.sendBeacon for robust mobile submission');
+      const blob = new Blob([body], { type: 'text/plain' });
+      const sent = navigator.sendBeacon(GOOGLE_SHEETS_URL, blob);
+      if (sent) {
+        console.log('✅ Data queued via sendBeacon');
+        return { success: true, method: 'beacon' };
+      }
+    }
+
+    // Fallback to fetch with minimal headers
+    console.log('📡 Using fetch as fallback...');
+    await fetch(GOOGLE_SHEETS_URL, {
       method: 'POST',
-      mode: 'no-cors', // Google Apps Script requires this
+      mode: 'no-cors',
+      cache: 'no-cache',
       headers: {
-        'Content-Type': 'text/plain;charset=utf-8',
+        'Content-Type': 'text/plain'
       },
-      body: JSON.stringify(formData)
+      body: body
     });
 
-    // Note: With no-cors, we can't read the response, but the data is sent successfully
-    console.log('✅ Data sent to Google Sheets (email will follow)');
-    return { success: true };
+    console.log('✅ Data sent to Google Sheets');
+    return { success: true, method: 'fetch' };
 
   } catch (error) {
     console.error('❌ Google Sheets save failed:', error);
-    throw new Error(`Failed to save to Google Sheets: ${error.message}`);
+    // Even if it fails, we don't want to block the user if the PDF was generated
+    // but we should log it clearly.
+    throw new Error(`Google Sheets error: ${error.message}`);
   }
 }
 
