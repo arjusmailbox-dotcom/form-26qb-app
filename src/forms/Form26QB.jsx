@@ -62,7 +62,7 @@ export default function Form26QB() {
 
     // Sobha Limited preset data
     const sobhaPresetData = {
-        sellerPAN: 'AABSC7723E',
+        sellerPAN: 'AABCS7723E',
         sellerMobile: '9880034900',
         sellerEmail: 'radhakrishnan.m@sobha.com',
         sellerAddress: '55/1, Devarabisanahalli, Bellandur S.o, Devara Beesana Halli',
@@ -739,7 +739,7 @@ export default function Form26QB() {
                     </div>
 
                     <CheckboxField
-                        label={watchSellerPreset === 'other'
+                        label={watchSellerPreset !== 'sobha'
                             ? "1. I have updated the seller information fields and confirm that the information is Correct"
                             : sellerDataConfirmed
                                 ? "1. I hereby confirm that the auto-populated seller information has been verified and is Correct"
